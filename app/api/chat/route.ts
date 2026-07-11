@@ -4,17 +4,20 @@ export async function POST(req: Request) {
   try {
     const { sessionId, message } = await req.json();
 
-    const response = await fetch("http://localhost:3001/api/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-tenant-id": "default",
-      },
-      body: JSON.stringify({
-        sessionId,
-        message,
-      }),
-    });
+    const response = await fetch(
+      "https://ainegotiator-8rik.onrender.com/api/chat",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-tenant-id": "default",
+        },
+        body: JSON.stringify({
+          sessionId,
+          message,
+        }),
+      }
+    );
 
     const data = await response.json();
 
