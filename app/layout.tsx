@@ -5,6 +5,7 @@ import { GoogleTagManager } from "@next/third-parties/google";
 import "./globals.css";
 
 import ChatWidget from "@/components/ChatWidget";
+import MetaPixel from "@/components/MetaPixel";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -97,6 +98,8 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-[#05070A] text-white">
         <GoogleTagManager gtmId="GTM-57RCDD3K" />
+
+        <MetaPixel />
 
         {children}
 
