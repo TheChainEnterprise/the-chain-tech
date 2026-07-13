@@ -1,15 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 import { Mail, Phone, Building2, User, Send } from "lucide-react";
 
 export default function ContactPage() {
-  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
@@ -23,7 +24,6 @@ export default function ContactPage() {
     e.preventDefault();
 
     setLoading(true);
-    setSuccess("");
 
     const res = await fetch("/api/contact", {
       method: "POST",
@@ -38,15 +38,7 @@ export default function ContactPage() {
     setLoading(false);
 
     if (data.success) {
-      setSuccess("✅ Message sent successfully.");
-
-      setForm({
-        name: "",
-        company: "",
-        email: "",
-        phone: "",
-        message: "",
-      });
+      router.push("/contact/success");
     } else {
       alert("Something went wrong. Please try again.");
     }
@@ -200,12 +192,6 @@ export default function ContactPage() {
                 <Send size={22} />
                 {loading ? "Sending..." : "Send Message"}
               </button>
-
-              {success && (
-                <p className="text-center text-cyan-300">
-                  {success}
-                </p>
-              )}
 
             </form>
 
