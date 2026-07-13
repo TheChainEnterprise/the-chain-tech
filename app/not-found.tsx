@@ -51,8 +51,8 @@ export default function NotFound() {
             transition={{ delay: 0.3 }}
             className="relative z-10 mt-6 max-w-2xl text-xl leading-9 text-zinc-400"
           >
-            The page you're looking for doesn't exist, has been moved,
-            or the URL may be incorrect.
+            The page you're looking for doesn't exist, may have been moved,
+or the URL was entered incorrectly.
           </motion.p>
 
           <motion.div

@@ -11,21 +11,21 @@ type ChatMessage = {
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
-useEffect(() => {
-  const openWidget = () => setOpen(true);
 
-  window.addEventListener("open-val-chat", openWidget);
+  useEffect(() => {
+    const openWidget = () => setOpen(true);
 
-  return () => {
-    window.removeEventListener("open-val-chat", openWidget);
-  };
-}, []);
+    window.addEventListener("open-val-chat", openWidget);
+
+    return () => {
+      window.removeEventListener("open-val-chat", openWidget);
+    };
+  }, []);
 
   const [input, setInput] = useState("");
 
   const [loading, setLoading] = useState(false);
 
-  // NEW: Unique visitor session
   const [sessionId, setSessionId] = useState("");
 
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -44,14 +44,13 @@ useEffect(() => {
     });
   }, [messages, loading]);
 
-  // NEW: Create one session per visitor
   useEffect(() => {
     let id = localStorage.getItem("thechain-session");
 
     if (!id) {
-id =
-  "visitor-" +
-  Math.random().toString(36).substring(2, 14);
+      id =
+        "visitor-" +
+        Math.random().toString(36).substring(2, 14);
 
       localStorage.setItem("thechain-session", id);
     }
@@ -76,7 +75,6 @@ id =
     setLoading(true);
 
     try {
-      // Small delay so Val feels like she's thinking.
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       const res = await fetch("/api/chat", {
@@ -118,6 +116,8 @@ id =
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setOpen(!open)}
+        aria-label={open ? "Close Val AI chat" : "Open Val AI chat"}
+        title={open ? "Close Val AI chat" : "Open Val AI chat"}
         className="fixed bottom-8 right-8 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-cyan-400 text-black shadow-[0_0_40px_rgba(34,211,238,.45)]"
       >
         {open ? <X size={28} /> : <MessageCircle size={28} />}
@@ -132,8 +132,6 @@ id =
             transition={{ duration: 0.2 }}
             className="fixed bottom-28 right-8 z-50 flex h-[500px] w-[360px] flex-col overflow-hidden rounded-3xl border border-cyan-400/20 bg-[#0B1118] shadow-[0_0_60px_rgba(34,211,238,.15)]"
           >
-            {/* Header */}
-
             <div className="border-b border-cyan-400/10 p-5">
               <h2 className="text-2xl font-bold text-white">
                 Val
@@ -144,16 +142,14 @@ id =
               </p>
             </div>
 
-            {/* Messages */}
-
             <div className="flex-1 space-y-4 overflow-y-auto p-5">
               {messages.map((message, index) => (
                 <div
                   key={index}
                   className={
                     message.role === "assistant"
-                      ? "max-w-[100%] rounded-2xl bg-cyan-400 px-4 py-3 whitespace-pre-line text-black"
-                      : "ml-auto max-w-[90%] rounded-2xl bg-zinc-800 px-4 py-3 whitespace-pre-line text-white"
+                      ? "max-w-[100%] whitespace-pre-line rounded-2xl bg-cyan-400 px-4 py-3 text-black"
+                      : "ml-auto max-w-[90%] whitespace-pre-line rounded-2xl bg-zinc-800 px-4 py-3 text-white"
                   }
                 >
                   {message.text}
@@ -199,8 +195,6 @@ id =
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Input */}
-
             <div className="border-t border-cyan-400/10 p-5">
               <div className="flex gap-3">
                 <input
@@ -218,6 +212,8 @@ id =
                 <button
                   onClick={sendMessage}
                   disabled={loading}
+                  aria-label="Send message"
+                  title="Send message"
                   className="rounded-xl bg-cyan-400 p-3 text-black transition hover:bg-cyan-300 disabled:opacity-50"
                 >
                   <Send size={18} />
