@@ -7,6 +7,7 @@ import "./globals.css";
 
 import ChatWidget from "@/components/ChatWidget";
 import MetaPixel from "@/components/MetaPixel";
+import CookieBanner from "@/components/CookieBanner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -107,6 +108,8 @@ export default function RootLayout({
         {children}
 
         <ChatWidget />
+
+        <CookieBanner />
       </body>
     </html>
   );

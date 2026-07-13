@@ -31,8 +31,8 @@ export default function Hero() {
         <Image
           src="/images/transparent_logo.png"
           alt="The Chain Technologies"
-          width={340}
-          height={340}
+          width={333}
+          height={333}
           priority
           className="-mb-8 drop-shadow-[0_0_90px_rgba(121,247,255,.65)]"
         />
