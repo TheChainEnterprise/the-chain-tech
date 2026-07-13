@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import ReactPixel from "react-facebook-pixel";
 
 const PIXEL_ID = "872100682225985";
 
@@ -11,12 +10,25 @@ export default function MetaPixel() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    ReactPixel.init(PIXEL_ID);
-    ReactPixel.pageView();
+    async function initPixel() {
+      const ReactPixel = (await import("react-facebook-pixel")).default;
+
+      ReactPixel.init(PIXEL_ID);
+
+      ReactPixel.pageView();
+    }
+
+    initPixel();
   }, []);
 
   useEffect(() => {
-    ReactPixel.pageView();
+    async function trackPage() {
+      const ReactPixel = (await import("react-facebook-pixel")).default;
+
+      ReactPixel.pageView();
+    }
+
+    trackPage();
   }, [pathname, searchParams]);
 
   return null;
