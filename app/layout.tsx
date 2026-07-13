@@ -17,8 +17,72 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "The Chain Technologies",
-  description: "AI Negotiating Receptionist by The Chain Technologies",
+  metadataBase: new URL("https://thechain.tech"),
+
+  title: {
+    default: "The Chain Technologies | AI Negotiating Receptionist",
+    template: "%s | The Chain Technologies",
+  },
+
+  description:
+    "Val is an AI Negotiating Receptionist that answers customers, qualifies leads, books appointments, and helps businesses operate 24/7.",
+
+  keywords: [
+    "AI Receptionist",
+    "AI Negotiator",
+    "AI Customer Support",
+    "AI Sales",
+    "Business Automation",
+    "Virtual Receptionist",
+    "The Chain Technologies",
+    "Val AI",
+  ],
+
+  authors: [
+    {
+      name: "The Chain Technologies",
+    },
+  ],
+
+  creator: "The Chain Technologies",
+
+  publisher: "The Chain Technologies",
+
+  alternates: {
+    canonical: "/",
+  },
+
+  openGraph: {
+    type: "website",
+    url: "https://thechain.tech",
+    title: "The Chain Technologies | AI Negotiating Receptionist",
+    description:
+      "Meet Val — the AI Negotiating Receptionist that answers customers, negotiates, books appointments and works 24/7.",
+    siteName: "The Chain Technologies",
+
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "The Chain Technologies - Val AI Receptionist",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "The Chain Technologies | AI Negotiating Receptionist",
+    description:
+      "Meet Val — the AI Negotiating Receptionist for modern businesses.",
+
+    images: ["/og-image.png"],
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
