@@ -85,7 +85,6 @@ export default function Hero() {
 
         <button
           onClick={() => {
-            alert("Button works!");
             window.dispatchEvent(new Event("open-val-chat"));
           }}
           className="rounded-full border border-cyan-400 px-8 py-4 font-semibold transition duration-300 hover:bg-cyan-400 hover:text-black"
