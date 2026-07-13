@@ -22,28 +22,77 @@ export const metadata: Metadata = {
   },
 };
 
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "The Chain Technologies",
+  url: "https://thechain.tech",
+  logo: "https://thechain.tech/logo.png",
+  description:
+    "The Chain Technologies builds AI-powered business automation solutions including Val, the AI Negotiating Receptionist.",
+  email: "info@thechain.tech",
+  sameAs: [
+    "https://www.linkedin.com/company/the-chain-technologies/"
+  ],
+};
+
+const softwareSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Val",
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Web",
+  creator: {
+    "@type": "Organization",
+    name: "The Chain Technologies",
+  },
+  description:
+    "Val is an AI Negotiating Receptionist that answers customers, qualifies leads, negotiates, books appointments, and helps businesses operate 24/7.",
+  offers: {
+    "@type": "Offer",
+    price: "50",
+    priceCurrency: "EUR",
+  },
+};
+
 export default function Home() {
   return (
-    <main className="bg-[#05070A] text-white">
-      <Navbar />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(organizationSchema),
+        }}
+      />
 
-      <Hero />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(softwareSchema),
+        }}
+      />
 
-      <Technologies />
+      <main className="bg-[#05070A] text-white">
+        <Navbar />
 
-      <Products />
+        <Hero />
 
-      <Roadmap />
+        <Technologies />
 
-      <About />
+        <Products />
 
-      <TalkToVal />
+        <Roadmap />
 
-      <Benefits />
+        <About />
 
-      <CTA />
+        <TalkToVal />
 
-      <Footer />
-    </main>
+        <Benefits />
+
+        <CTA />
+
+        <Footer />
+      </main>
+    </>
   );
 }
