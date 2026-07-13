@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 import "./globals.css";
 
@@ -31,11 +32,11 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[#05070A] text-white">
+        <GoogleTagManager gtmId="GTM-57RCDD3K" />
 
         {children}
 
         <ChatWidget />
-
       </body>
     </html>
   );
