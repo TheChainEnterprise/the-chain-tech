@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@axe-core/react": "^4.12.1",
+    "@clerk/nextjs": "^7.5.17",
     "@next/third-parties": "^16.2.10",
     "framer-motion": "^12.42.2",
     "lucide-react": "^1.24.0",

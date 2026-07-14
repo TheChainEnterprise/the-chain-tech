@@ -14,7 +14,6 @@ export default function Navbar() {
           href="/"
           className="flex items-center gap-3"
         >
-
           <Image
             src="/images/transparent_logo.png"
             alt="The Chain"
@@ -26,7 +25,6 @@ export default function Navbar() {
           <span className="text-xl font-bold tracking-[0.18em] text-cyan-300">
             THE CHAIN
           </span>
-
         </a>
 
         {/* Navigation */}
@@ -98,12 +96,25 @@ export default function Navbar() {
 
         </div>
 
-        <a
-          href="/#talktoval"
-          className="rounded-full border border-cyan-400 px-5 py-2 text-sm font-medium transition duration-300 hover:bg-cyan-400 hover:text-black"
-        >
-          Talk to Val
-        </a>
+        {/* Right Side */}
+
+        <div className="flex items-center gap-4">
+
+          <a
+            href="/dashboard"
+            className="rounded-full border border-zinc-700 px-5 py-2 text-sm font-medium transition hover:border-cyan-400 hover:text-cyan-300"
+          >
+            Admin Login
+          </a>
+
+          <a
+            href="/#talktoval"
+            className="rounded-full border border-cyan-400 bg-cyan-400 px-5 py-2 text-sm font-semibold text-black transition hover:bg-cyan-300"
+          >
+            Talk to Val
+          </a>
+
+        </div>
 
       </nav>
 
