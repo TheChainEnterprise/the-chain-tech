@@ -51,8 +51,7 @@ export default clerkMiddleware(async (auth, req) => {
 
 
   const email =
-    user.emailAddresses[0]?.emailAddress.toLowerCase();
-
+    user.emailAddresses[0]?.emailAddress?.toLowerCase();
 
 
   if (!email || !ADMIN_EMAILS.includes(email)) {
