@@ -45,7 +45,10 @@ export default function ClientsPage() {
 
         <div className="p-10">
 
-            <BackButton label="Back to Dashboard" />
+            <BackButton
+                href="/dashboard"
+                label="Back to Dashboard"
+            />
 
             <div className="flex items-center justify-between mb-10">
 
