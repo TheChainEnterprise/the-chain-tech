@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import BackButton from "@/components/BackButton";
 
+const API = process.env.NEXT_PUBLIC_API_URL!;
+
 export default function ClientsPage() {
 
     const [clients, setClients] = useState<any[]>([]);
@@ -15,7 +17,7 @@ export default function ClientsPage() {
     async function loadClients() {
 
         const res = await fetch(
-            "http://localhost:3001/api/admin/clients"
+            `${API}/api/admin/clients`
         );
 
         const data = await res.json();
@@ -29,7 +31,7 @@ export default function ClientsPage() {
         if (!confirm("Delete this client permanently?")) return;
 
         await fetch(
-            `http://localhost:3001/api/admin/clients/${id}`,
+            `${API}/api/admin/clients/${id}`,
             {
                 method: "DELETE",
             }

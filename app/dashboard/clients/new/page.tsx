@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+const API = process.env.NEXT_PUBLIC_API_URL!;
+
 export default function NewClientPage() {
     const router = useRouter();
 
@@ -18,7 +20,7 @@ export default function NewClientPage() {
             .toLowerCase()
             .replace(/[^a-z0-9]+/g, "_");
 
-        const res = await fetch("http://localhost:3001/api/admin/clients", {
+        const res = await fetch(`${API}/api/admin/clients`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import BackButton from "@/components/BackButton";
 
+const API = process.env.NEXT_PUBLIC_API_URL!;
+
 export default function IntegrationsPage() {
 
     const { clientId } = useParams();
@@ -27,7 +29,7 @@ export default function IntegrationsPage() {
     async function loadSettings() {
 
         const res = await fetch(
-            "http://localhost:3001/api/admin/integrations",
+            `${API}/api/admin/integrations`,
             {
                 headers: {
                     "x-tenant-id": String(clientId),
@@ -44,7 +46,7 @@ export default function IntegrationsPage() {
         setSaving(true);
 
         await fetch(
-            "http://localhost:3001/api/admin/integrations",
+            `${API}/api/admin/integrations`,
             {
                 method: "POST",
                 headers: {
@@ -64,7 +66,7 @@ export default function IntegrationsPage() {
     async function connectGoogleCalendar() {
 
         const res = await fetch(
-            "http://localhost:3001/api/admin/calendar/connect",
+            `${API}/api/admin/calendar/connect`,
             {
                 headers: {
                     "x-tenant-id": String(clientId),
@@ -81,7 +83,7 @@ export default function IntegrationsPage() {
     async function testCalendar() {
 
         const res = await fetch(
-            "http://localhost:3001/api/admin/calendar/list",
+            `${API}/api/admin/calendar/list`,
             {
                 headers: {
                     "x-tenant-id": String(clientId),

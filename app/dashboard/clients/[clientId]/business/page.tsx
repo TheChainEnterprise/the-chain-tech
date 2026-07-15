@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import BackButton from "@/components/BackButton";
 
+const API = process.env.NEXT_PUBLIC_API_URL!;
+
 export default function BusinessProfilePage() {
 
     const params = useParams();
@@ -22,7 +24,7 @@ export default function BusinessProfilePage() {
 
     async function loadProfile() {
 
-        const res = await fetch("http://localhost:3001/api/admin/profile", {
+        const res = await fetch(`${API}/api/admin/profile`, {
             headers: {
                 "x-tenant-id": clientId,
             },
@@ -38,7 +40,7 @@ export default function BusinessProfilePage() {
 
         setSaving(true);
 
-        await fetch("http://localhost:3001/api/admin/profile", {
+        await fetch(`${API}/api/admin/profile`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import BackButton from "@/components/BackButton";
 
+const API = process.env.NEXT_PUBLIC_API_URL!;
+
 export default function ImportPage() {
 
     const { clientId } = useParams();
@@ -23,7 +25,7 @@ export default function ImportPage() {
     async function loadStatus() {
 
         const res = await fetch(
-            "http://localhost:3001/api/admin/import",
+            `${API}/api/admin/import`,
             {
                 headers: {
                     "x-tenant-id": String(clientId),
@@ -46,7 +48,7 @@ export default function ImportPage() {
         setLoading(true);
 
         await fetch(
-            "http://localhost:3001/api/admin/import",
+            `${API}/api/admin/import`,
             {
                 method: "POST",
                 headers: {
@@ -70,7 +72,7 @@ export default function ImportPage() {
         if (!confirm("Delete imported website?")) return;
 
         await fetch(
-            "http://localhost:3001/api/admin/import",
+            `${API}/api/admin/import`,
             {
                 method: "DELETE",
                 headers: {

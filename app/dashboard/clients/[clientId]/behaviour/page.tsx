@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import BackButton from "@/components/BackButton";
 
+const API = process.env.NEXT_PUBLIC_API_URL!;
+
 export default function BehaviourPage() {
 
     const { clientId } = useParams();
@@ -22,7 +24,7 @@ export default function BehaviourPage() {
     async function loadBehaviour() {
 
         const res = await fetch(
-            "http://localhost:3001/api/admin/behaviour",
+            `${API}/api/admin/behaviour`,
             {
                 headers: {
                     "x-tenant-id": String(clientId),
@@ -51,7 +53,7 @@ export default function BehaviourPage() {
         setSaving(true);
 
         await fetch(
-            "http://localhost:3001/api/admin/behaviour",
+            `${API}/api/admin/behaviour`,
             {
                 method: "POST",
                 headers: {

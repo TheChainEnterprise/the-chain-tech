@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import BackButton from "@/components/BackButton";
 
+const API = process.env.NEXT_PUBLIC_API_URL!;
+
 export default function ServicesPage() {
 
     const params = useParams();
@@ -19,7 +21,7 @@ export default function ServicesPage() {
     async function loadServices() {
 
         const res = await fetch(
-            "http://localhost:3001/api/admin/services",
+            `${API}/api/admin/services`,
             {
                 headers: {
                     "x-tenant-id": clientId,
@@ -36,7 +38,7 @@ export default function ServicesPage() {
         setSaving(true);
 
         await fetch(
-            "http://localhost:3001/api/admin/services",
+            `${API}/api/admin/services`,
             {
                 method: "POST",
                 headers: {
