@@ -29,41 +29,94 @@ export default function ChatWidget() {
     const [loading, setLoading] = useState(false);
     const [sessionId, setSessionId] = useState("");
 
-    const [messages, setMessages] = useState<ChatMessage[]>([
-        {
-            role: "assistant",
-            text:
-                "Hello! 👋\n\nI'm Val.\n\nSoon you'll be able to ask me anything about The Chain Technologies.",
-        },
-    ]);
+const DEFAULT_MESSAGES: ChatMessage[] = [
+    {
+        role: "assistant",
+        text:
+            "Hello! 👋\n\nI'm Val.\n\nHow can I help you today?",
+    },
+];
 
-    const messagesEndRef = useRef<HTMLDivElement | null>(null);
+const [messages, setMessages] =
+    useState<ChatMessage[]>(DEFAULT_MESSAGES);
 
-    useEffect(() => {
+const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-        messagesEndRef.current?.scrollIntoView({
-            behavior: "smooth",
-        });
+useEffect(() => {
 
-    }, [messages, loading]);
+    messagesEndRef.current?.scrollIntoView({
+        behavior: "smooth",
+    });
 
-    useEffect(() => {
+}, [messages, loading]);
 
-        let id = localStorage.getItem("thechain-session");
+useEffect(() => {
 
-        if (!id) {
+    let id = localStorage.getItem("thechain-session");
 
-            id =
-                "visitor-" +
-                Math.random().toString(36).substring(2, 14);
+    if (!id) {
 
-            localStorage.setItem("thechain-session", id);
+        id =
+            "visitor-" +
+            Math.random().toString(36).substring(2, 14);
+
+        localStorage.setItem("thechain-session", id);
+
+    }
+
+    setSessionId(id);
+
+    const savedMessages =
+        localStorage.getItem("thechain-chat");
+
+    if (savedMessages) {
+
+        try {
+
+            setMessages(
+                JSON.parse(savedMessages)
+            );
+
+        } catch {
+
+            localStorage.removeItem(
+                "thechain-chat"
+            );
 
         }
 
-        setSessionId(id);
+    }
 
-    }, []);
+    const savedOpen =
+        localStorage.getItem(
+            "thechain-chat-open"
+        );
+
+    if (savedOpen === "true") {
+
+        setOpen(true);
+
+    }
+
+}, []);
+
+useEffect(() => {
+
+    localStorage.setItem(
+        "thechain-chat",
+        JSON.stringify(messages)
+    );
+
+}, [messages]);
+
+useEffect(() => {
+
+    localStorage.setItem(
+        "thechain-chat-open",
+        String(open)
+    );
+
+}, [open]);
 
     async function sendMessage() {
 
