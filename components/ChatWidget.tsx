@@ -118,6 +118,33 @@ useEffect(() => {
 
 }, [open]);
 
+function startNewChat() {
+
+    const id =
+        "visitor-" +
+        Math.random().toString(36).substring(2, 14);
+
+    localStorage.removeItem("thechain-chat");
+
+    localStorage.removeItem("thechain-chat-open");
+
+    localStorage.setItem(
+        "thechain-session",
+        id
+    );
+
+    setSessionId(id);
+
+    setMessages(DEFAULT_MESSAGES);
+
+    setInput("");
+
+    setLoading(false);
+
+    setOpen(true);
+
+}
+
     async function sendMessage() {
 
         if (!input.trim() || loading) return;
@@ -202,18 +229,28 @@ useEffect(() => {
                         transition={{ duration: 0.2 }}
                         className="fixed bottom-28 right-8 z-50 flex h-[500px] w-[360px] flex-col overflow-hidden rounded-3xl border border-cyan-400/20 bg-[#0B1118] shadow-[0_0_60px_rgba(34,211,238,.15)]"
                     >
-                        <div className="border-b border-cyan-400/10 p-5">
+<div className="flex items-start justify-between border-b border-cyan-400/10 p-5">
 
-                            <h2 className="text-2xl font-bold text-white">
-                                Val
-                            </h2>
+    <div>
 
-                            <p className="mt-1 text-sm text-cyan-300">
-                                AI Receptionist
-                            </p>
+        <h2 className="text-2xl font-bold text-white">
+            Val
+        </h2>
 
-                        </div>
+        <p className="mt-1 text-sm text-cyan-300">
+            AI Receptionist
+        </p>
 
+    </div>
+
+    <button
+        onClick={startNewChat}
+        className="rounded-lg border border-cyan-400/20 px-3 py-2 text-xs text-cyan-300 transition hover:bg-cyan-400/10"
+    >
+        New Chat
+    </button>
+
+</div>
                         <div className="flex-1 space-y-4 overflow-y-auto p-5">
 
                             {messages.map((message, index) => (
