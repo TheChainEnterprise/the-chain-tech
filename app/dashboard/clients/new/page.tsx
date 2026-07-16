@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-// Hardcode the backend URL to ensure it correctly hits the Express server (port 3001)
-const API = "http://localhost:3001";
+const API = process.env.NEXT_PUBLIC_API_URL!;
 
 export default function NewClientPage() {
     const router = useRouter();
@@ -16,14 +15,16 @@ export default function NewClientPage() {
     const [phone, setPhone] = useState("");
 
     async function createClient() {
-        if (!businessName) {
-            alert("Business Name is required");
+        if (!businessName.trim()) {
+            alert("Business Name is required.");
             return;
         }
 
         const id = businessName
+            .trim()
             .toLowerCase()
-            .replace(/[^a-z0-9]+/g, "_");
+            .replace(/[^a-z0-9]+/g, "_")
+            .replace(/^_+|_+$/g, "");
 
         try {
             const res = await fetch(`${API}/api/admin/clients`, {
@@ -42,54 +43,55 @@ export default function NewClientPage() {
             });
 
             if (!res.ok) {
-                const errorData = await res.json();
-                alert(`Failed to create client: ${errorData.error || "Unknown error"}`);
+                const error = await res.json();
+                alert(error.error || "Failed to create client.");
                 return;
             }
 
             router.push("/dashboard/clients");
         } catch (err) {
-            console.error("Fetch error:", err);
-            alert("Could not connect to the backend server. Make sure it is running on port 3001.");
+            console.error(err);
+            alert("Unable to connect to the AI Engine.");
         }
     }
 
     return (
         <div className="max-w-3xl p-10 space-y-6">
+
             <h1 className="text-5xl font-black">
                 Create New Client
             </h1>
 
             <input
-                className="w-full rounded bg-zinc-900 border border-zinc-700 p-4"
+                className="w-full rounded border border-zinc-700 bg-zinc-900 p-4"
                 placeholder="Business Name"
                 value={businessName}
                 onChange={(e) => setBusinessName(e.target.value)}
             />
 
             <input
-                className="w-full rounded bg-zinc-900 border border-zinc-700 p-4"
+                className="w-full rounded border border-zinc-700 bg-zinc-900 p-4"
                 placeholder="Industry"
                 value={industry}
                 onChange={(e) => setIndustry(e.target.value)}
             />
 
             <input
-                className="w-full rounded bg-zinc-900 border border-zinc-700 p-4"
+                className="w-full rounded border border-zinc-700 bg-zinc-900 p-4"
                 placeholder="Website"
                 value={website}
                 onChange={(e) => setWebsite(e.target.value)}
             />
 
             <input
-                className="w-full rounded bg-zinc-900 border border-zinc-700 p-4"
+                className="w-full rounded border border-zinc-700 bg-zinc-900 p-4"
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
             />
 
             <input
-                className="w-full rounded bg-zinc-900 border border-zinc-700 p-4"
+                className="w-full rounded border border-zinc-700 bg-zinc-900 p-4"
                 placeholder="Phone"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
@@ -97,10 +99,11 @@ export default function NewClientPage() {
 
             <button
                 onClick={createClient}
-                className="rounded-xl bg-cyan-500 px-6 py-3 font-bold text-black hover:bg-cyan-400"
+                className="rounded-xl bg-cyan-500 px-6 py-3 font-bold text-black transition hover:bg-cyan-400"
             >
                 Create Client
             </button>
+
         </div>
     );
 }
