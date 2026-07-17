@@ -5,7 +5,9 @@ import { useEffect, useState } from "react";
 import BackButton from "@/components/BackButton";
 
 // Force the API base URL to ensure we hit the Express backend, not Next.js
-const API = "http://localhost:3001";
+const API =
+    process.env.NEXT_PUBLIC_API_URL ||
+    "http://localhost:3001";
 
 export default function ClientsPage() {
     const [clients, setClients] = useState<any[]>([]);
