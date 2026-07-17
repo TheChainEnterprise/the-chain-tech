@@ -92,7 +92,7 @@ export default function Footer() {
   </a>
 
   <a
-    href="https://wa.me/61468491094"
+    href="https://wa.me/message/ILF6VBBPVXFFM1"
     target="_blank"
     rel="noopener noreferrer"
     className="flex items-center gap-3 rounded-full border border-cyan-400/20 bg-[#0B1118]/80 px-6 py-3 transition hover:border-cyan-400 hover:bg-[#101925]"

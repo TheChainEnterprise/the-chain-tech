@@ -103,7 +103,7 @@ export default function ServicesPage() {
                 {services.map((service, index) => (
 
                     <div
-                        key={service.id}
+                        key={`${service.name || "service"}-${index}`}
                         className="rounded-2xl border border-zinc-800 bg-zinc-900 p-8"
                     >
 

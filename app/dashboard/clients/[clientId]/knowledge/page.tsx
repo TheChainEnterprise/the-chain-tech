@@ -108,7 +108,7 @@ export default function KnowledgePage() {
                 {knowledge.map((article, index) => (
 
                     <div
-                        key={index}
+                        key={`${article.title || "knowledge"}-${index}`}
                         className="rounded-3xl border border-zinc-800 bg-zinc-900 p-8 space-y-4"
                     >
 
