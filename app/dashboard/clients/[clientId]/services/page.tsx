@@ -110,7 +110,7 @@ export default function ServicesPage() {
                         <input
                             className="w-full mb-4 rounded bg-zinc-800 p-3"
                             placeholder="Service Name"
-                            value={service.name}
+                            value={service.name ?? ""}
                             onChange={(e) =>
                                 update(index, "name", e.target.value)
                             }
@@ -119,7 +119,7 @@ export default function ServicesPage() {
                         <textarea
                             className="w-full mb-4 rounded bg-zinc-800 p-3"
                             placeholder="Description"
-                            value={service.description}
+                            value={service.description ?? ""}
                             onChange={(e) =>
                                 update(index, "description", e.target.value)
                             }
@@ -129,7 +129,7 @@ export default function ServicesPage() {
                             className="w-full mb-4 rounded bg-zinc-800 p-3"
                             type="number"
                             placeholder="Setup Price"
-                            value={service.price}
+                            value={service.price ?? ""}
                             onChange={(e) =>
                                 update(index, "price", Number(e.target.value))
                             }
@@ -139,7 +139,7 @@ export default function ServicesPage() {
                             className="w-full mb-6 rounded bg-zinc-800 p-3"
                             type="number"
                             placeholder="Monthly Price"
-                            value={service.monthly}
+                            value={service.monthly ?? ""}
                             onChange={(e) =>
                                 update(index, "monthly", Number(e.target.value))
                             }

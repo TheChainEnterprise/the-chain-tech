@@ -43,6 +43,11 @@ export default function ClientPage() {
             description: "Google Calendar, WhatsApp & Email",
             href: "integrations",
         },
+        {
+            title: "Widget",
+            description: "Copy the AI widget installation code",
+            href: "widget",
+        },
     ];
 
     return (
