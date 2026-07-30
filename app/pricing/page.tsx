@@ -1,17 +1,24 @@
 "use client";
 
+import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 import {
   Bot,
-  Settings,
-  Euro,
+  Rocket,
+  Globe,
   ArrowRight,
   CheckCircle2,
 } from "lucide-react";
 
 export default function PricingPage() {
+  // CHANGED: toggle for the website bundle's site tier (single vs multi page)
+  const [siteType, setSiteType] = useState<"single" | "multi">("single");
+  const sitePrice = siteType === "single" ? 500 : 1000;
+  const valAnnualPrice = 1000;
+  const bundleTotal = sitePrice + valAnnualPrice;
+
   return (
     <>
   <Navbar />
@@ -50,9 +57,9 @@ export default function PricingPage() {
             transition={{ delay: .15 }}
             className="mx-auto mt-8 max-w-4xl text-2xl leading-10 text-zinc-400"
           >
-            Simple pricing.
+            Simple, upfront pricing.
             <br />
-            We only succeed when your business succeeds.
+            No monthly bill to dread.
           </motion.p>
 
         </div>
@@ -65,25 +72,63 @@ export default function PricingPage() {
 
         <div className="mx-auto grid max-w-7xl gap-8 px-8 lg:grid-cols-3">
 
-          {/* Installation */}
+          {/* 1-Month Test Drive */}
 
           <motion.div
             whileHover={{ y: -8 }}
             className="rounded-3xl border border-cyan-400/20 bg-[#0B1118] p-10"
           >
 
-            <Bot className="mb-8 text-cyan-300" size={40} />
+            <Rocket className="mb-8 text-cyan-300" size={40} />
 
             <h2 className="text-4xl font-black">
-              Installation
+              Test Drive
             </h2>
 
             <div className="mt-6 text-6xl font-black text-cyan-300">
-              €500
+              $500
             </div>
 
             <p className="mt-2 text-zinc-500">
-              One-time payment
+              Installation + your first month
+            </p>
+
+            <div className="mt-10 space-y-5">
+
+              <Feature text="Full Val Installation" />
+              <Feature text="Business AI Configuration" />
+              <Feature text="30 Days Live on Your Site" />
+              <Feature text="Real Customer Conversations" />
+              <Feature text="No Long-Term Commitment" />
+
+            </div>
+
+            <p className="mt-10 text-sm text-zinc-500">
+              Like what you see? Continue for just{" "}
+              <span className="font-semibold text-cyan-300">$500/year</span>.
+            </p>
+
+          </motion.div>
+
+          {/* Val Annual Plan */}
+
+          <motion.div
+            whileHover={{ y: -8 }}
+            className="rounded-3xl border-2 border-cyan-400 bg-[#0B1118] p-10 shadow-[0_0_50px_rgba(34,211,238,.15)]"
+          >
+
+            <Bot className="mb-8 text-cyan-300" size={40} />
+
+            <h2 className="text-4xl font-black">
+              Val — Annual
+            </h2>
+
+            <div className="mt-6 text-6xl font-black text-cyan-300">
+              $1,000
+            </div>
+
+            <p className="mt-2 text-zinc-500">
+              First year · then $500/year
             </p>
 
             <div className="mt-10 space-y-5">
@@ -94,94 +139,107 @@ export default function PricingPage() {
               <Feature text="CRM Integration" />
               <Feature text="Calendar Integration" />
               <Feature text="Knowledge Setup" />
-              <Feature text="Go Live" />
-
-            </div>
-
-          </motion.div>
-
-          {/* Monthly */}
-
-          <motion.div
-            whileHover={{ y: -8 }}
-            className="rounded-3xl border-2 border-cyan-400 bg-[#0B1118] p-10 shadow-[0_0_50px_rgba(34,211,238,.15)]"
-          >
-
-            <Settings className="mb-8 text-cyan-300" size={40} />
-
-            <h2 className="text-4xl font-black">
-              Monthly
-            </h2>
-
-            <div className="mt-6 text-6xl font-black text-cyan-300">
-              €50
-            </div>
-
-            <p className="mt-2 text-zinc-500">
-              Per month
-            </p>
-
-            <div className="mt-10 space-y-5">
-
-              <Feature text="Hosting" />
-              <Feature text="Monitoring" />
-              <Feature text="Updates" />
-              <Feature text="AI Improvements" />
-              <Feature text="Business Knowledge Updates" />
+              <Feature text="Hosting & Monitoring" />
+              <Feature text="Ongoing AI Improvements" />
               <Feature text="Priority Support" />
 
             </div>
 
           </motion.div>
 
-          {/* Negotiation */}
+          {/* Website + Val bundle */}
 
           <motion.div
             whileHover={{ y: -8 }}
             className="rounded-3xl border border-cyan-400/20 bg-[#0B1118] p-10"
           >
 
-            <Euro className="mb-8 text-cyan-300" size={40} />
+            <Globe className="mb-8 text-cyan-300" size={40} />
 
             <h2 className="text-4xl font-black">
-              Success Fee
+              Website + Val
             </h2>
 
-            <div className="mt-6 text-5xl font-black text-cyan-300">
-              10%
+            <div className="mt-6 text-6xl font-black text-cyan-300">
+              ${bundleTotal.toLocaleString()}
             </div>
 
             <p className="mt-2 text-zinc-500">
-              Only from additional negotiated profit
+              No website yet? We'll build one, then bring Val to it.
             </p>
 
-            <div className="mt-10 space-y-4 rounded-2xl border border-cyan-400/15 bg-[#101720] p-6">
+            {/* Site type toggle */}
+            <div className="mt-8 flex rounded-full border border-cyan-400/20 bg-[#05070A] p-1 text-sm">
 
-              <Row left="Customer Budget" right="€1000" />
+              <button
+                onClick={() => setSiteType("single")}
+                className={`flex-1 rounded-full py-2 font-semibold transition ${
+                  siteType === "single"
+                    ? "bg-cyan-400 text-black"
+                    : "text-zinc-400"
+                }`}
+              >
+                Single Page — $500
+              </button>
+
+              <button
+                onClick={() => setSiteType("multi")}
+                className={`flex-1 rounded-full py-2 font-semibold transition ${
+                  siteType === "multi"
+                    ? "bg-cyan-400 text-black"
+                    : "text-zinc-400"
+                }`}
+              >
+                Multi Page — $1,000
+              </button>
+
+            </div>
+
+            <div className="mt-8 space-y-4 rounded-2xl border border-cyan-400/15 bg-[#101720] p-6">
+
+              <Row
+                left={
+                  siteType === "single"
+                    ? "Single-Page Site"
+                    : "Multi-Page Custom Site"
+                }
+                right={`$${sitePrice}`}
+              />
 
               <Arrow />
 
-              <Row left="Your Minimum Price" right="€900" />
+              <Row left="Val — Annual" right={`$${valAnnualPrice.toLocaleString()}`} />
 
               <Arrow />
 
-              <Row left="Val Negotiates" right="€940" />
-
-              <Arrow />
-
-              <Row left="Extra Profit" right="€40" />
-
-              <Arrow />
-
-              <Row left="You Keep" right="€36" />
-
-              <Arrow />
-
-              <Row left="The Chain" right="€4" />
+              <Row left="Total, First Year" right={`$${bundleTotal.toLocaleString()}`} />
 
             </div>
 
           </motion.div>
+
+        </div>
+
+      </section>
+
+      {/* Success fee — light mention, not a full tier */}
+
+      <section className="border-t border-cyan-400/10 py-20">
+
+        <div className="mx-auto max-w-3xl px-8 text-center">
+
+          <p className="text-lg leading-8 text-zinc-500">
+            Want Val to actively negotiate pricing with your customers, with
+            a success fee only on the extra profit she wins you? That's
+            available as an add-on for select businesses —{" "}
+            <a
+              href="/contact"
+              className="text-cyan-300 underline underline-offset-4"
+            >
+              ask us about it
+            </a>
+            .
+          </p>
 
         </div>
 
@@ -194,13 +252,12 @@ export default function PricingPage() {
         <div className="mx-auto max-w-5xl px-8 text-center">
 
           <h2 className="text-6xl font-black">
-            No Success?
+            Ready when you are.
           </h2>
 
           <p className="mx-auto mt-8 max-w-3xl text-2xl leading-10 text-zinc-400">
-            If Val doesn't negotiate additional profit,
-            we don't earn a success fee.
-            Our incentives are aligned with yours.
+            One flat setup fee, one simple yearly renewal.
+            No surprises, no monthly bill to remember.
           </p>
 
           <a
