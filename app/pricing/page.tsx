@@ -57,7 +57,7 @@ export default function PricingPage() {
             >
               No monthly subscriptions. No hidden fees.
               <br />
-              Just an AI receptionist that answers customers, captures leads, and books appointments 24/7.
+              Just an AI assistant that greets website visitors, captures leads, and books appointments 24/7.
             </motion.p>
 
             <motion.div
@@ -99,7 +99,7 @@ export default function PricingPage() {
                 <div className="mt-6 text-6xl font-black text-cyan-300">$500</div>
 
                 <p className="mt-2 font-medium text-zinc-300">
-                  See Val speak with real customers before making a long-term decision.
+                  See Val chat with real website visitors before making a long-term decision.
                 </p>
 
                 <div className="mt-10 space-y-5">
@@ -117,7 +117,7 @@ export default function PricingPage() {
               </p>
             </motion.div>
 
-            {/* Val AI Receptionist (Annual) */}
+            {/* Val AI Assistant (Annual) */}
             <motion.div
               whileHover={{ y: -8 }}
               className="relative flex flex-col justify-between rounded-3xl border-2 border-cyan-400 bg-[#0B1118] p-10 shadow-[0_0_50px_rgba(34,211,238,.15)]"
@@ -129,7 +129,7 @@ export default function PricingPage() {
               <div>
                 <Bot className="mb-8 text-cyan-300" size={40} />
 
-                <h2 className="text-4xl font-black">Val AI Receptionist</h2>
+                <h2 className="text-4xl font-black">Val AI Assistant</h2>
 
                 <div className="mt-6 text-6xl font-black text-cyan-300">$1,000</div>
 
@@ -140,7 +140,7 @@ export default function PricingPage() {
                 <div className="mt-10 space-y-5">
                   <Feature text="Learns your business" />
                   <Feature text="Val Installation" />
-                  <Feature text="Answers phone calls with AI" />
+                  <Feature text="Engages visitors on your site" />
                   <Feature text="Automatically captures every lead" />
                   <Feature text="Books appointments automatically" />
                   <Feature text="Trained on your services & FAQs" />
@@ -266,7 +266,7 @@ export default function PricingPage() {
               />
               <FaqItem
                 q="Can Val answer customer questions?"
-                a="Yes. Val is trained specifically on your business."
+                a="Yes. Val is trained specifically on your business and responds directly in chat."
               />
               <FaqItem
                 q="Can I upgrade later?"
