@@ -43,6 +43,12 @@ export default function ClientPage() {
             description: "Google Calendar, WhatsApp & Email",
             href: "integrations",
         },
+
+        {
+            title: "Conversations",
+            description: "Live WhatsApp & website chats for this client",
+            href: "conversations",
+        },
         {
             title: "Widget",
             description: "Copy the AI widget installation code",
