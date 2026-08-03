@@ -4,7 +4,7 @@ import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import ConversationsView from "@/components/dashboard/ConversationsView";
 
 // Your own company's tenant ID — same one set as DEFAULT_TENANT_ID on Render.
-const THE_CHAIN_TENANT_ID = "The-Chain-Technologies";
+const THE_CHAIN_TENANT_ID = "the_chain_technologies";
 
 export default function ConversationsPage() {
     return (
