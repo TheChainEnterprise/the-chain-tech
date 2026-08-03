@@ -42,9 +42,10 @@ export default function ConversationsView({ tenantId }: { tenantId: string }) {
 
     const loadList = useCallback(async () => {
         try {
-            const res = await fetch(`${API}/api/admin/conversations?channel=${channel}`, {
-                headers: { "x-tenant-id": tenantId },
-            });
+const res = await fetch(`${API}/api/admin/conversations?channel=${channel}`, {
+    headers: { "x-tenant-id": tenantId },
+    cache: "no-store",
+});
             if (!res.ok) return;
             const data = await res.json();
             setList(data);
@@ -55,10 +56,10 @@ export default function ConversationsView({ tenantId }: { tenantId: string }) {
 
     const loadDetail = useCallback(async (sessionId: string) => {
         try {
-            const res = await fetch(
-                `${API}/api/admin/conversations/${encodeURIComponent(sessionId)}`,
-                { headers: { "x-tenant-id": tenantId } }
-            );
+const res = await fetch(
+    `${API}/api/admin/conversations/${encodeURIComponent(sessionId)}`,
+    { headers: { "x-tenant-id": tenantId }, cache: "no-store" }
+);
             if (!res.ok) return;
             const data = await res.json();
             setDetail(data);
