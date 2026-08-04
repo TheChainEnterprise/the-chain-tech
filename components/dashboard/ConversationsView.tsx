@@ -14,6 +14,7 @@ type ConversationListItem = {
     lastMessage: string;
     lastRole: string;
     lastUpdated?: string;
+    startedAt?: string;
 };
 
 type Message = {
@@ -30,8 +31,22 @@ type ConversationDetail = {
         phone?: string;
         email?: string;
     };
+    startedAt?: string;
+    lastUpdated?: string;
     messages: Message[];
 };
+
+function formatTimestamp(iso?: string) {
+    if (!iso) return "—";
+    const date = new Date(iso);
+    if (isNaN(date.getTime())) return "—";
+    return date.toLocaleString(undefined, {
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+}
 
 export default function ConversationsView({ tenantId }: { tenantId: string }) {
     const [channel, setChannel] = useState<"whatsapp" | "website">("whatsapp");
@@ -71,14 +86,12 @@ export default function ConversationsView({ tenantId }: { tenantId: string }) {
         }
     }, [tenantId]);
 
-    // Reload the list when the channel tab changes, and poll every 5s for live updates
     useEffect(() => {
         loadList();
         const interval = setInterval(loadList, 5000);
         return () => clearInterval(interval);
     }, [loadList]);
 
-    // Poll the open conversation every 4s so incoming messages show up live
     useEffect(() => {
         if (!selectedId) return;
         loadDetail(selectedId);
@@ -156,11 +169,13 @@ export default function ConversationsView({ tenantId }: { tenantId: string }) {
     const selectedListItem = list.find((c) => c.sessionId === selectedId);
     const isPaused = detail?.status === "Manual Override";
 
-    // Newest first, using lastUpdated if the backend provides it.
-    // Falls back to original order if it's not present yet.
+    // Newest first. Anything without a timestamp yet counts as epoch 0,
+    // so it reliably sinks to the bottom instead of staying stuck wherever
+    // it happened to be in the raw list.
     const sortedList = [...list].sort((a, b) => {
-        if (!a.lastUpdated || !b.lastUpdated) return 0;
-        return new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime();
+        const aTime = a.lastUpdated ? new Date(a.lastUpdated).getTime() : 0;
+        const bTime = b.lastUpdated ? new Date(b.lastUpdated).getTime() : 0;
+        return bTime - aTime;
     });
 
     const filteredList = sortedList.filter((c) => {
@@ -248,9 +263,14 @@ export default function ConversationsView({ tenantId }: { tenantId: string }) {
                                     <p className="mt-1 truncate pr-8 text-sm text-zinc-400">
                                         {c.lastMessage || "No messages yet"}
                                     </p>
-                                    <p className="mt-2 text-xs text-cyan-300">
-                                        {c.status}
-                                    </p>
+                                    <div className="mt-2 flex items-center justify-between pr-8">
+                                        <p className="text-xs text-cyan-300">
+                                            {c.status}
+                                        </p>
+                                        <p className="text-xs text-zinc-500">
+                                            {formatTimestamp(c.lastUpdated)}
+                                        </p>
+                                    </div>
                                 </button>
 
                                 <button
@@ -359,6 +379,20 @@ export default function ConversationsView({ tenantId }: { tenantId: string }) {
                                 <p className="text-sm text-zinc-500">Status</p>
                                 <p className="font-semibold text-cyan-300">
                                     {detail.status}
+                                </p>
+                            </div>
+
+                            <div className="border-t border-cyan-400/10 pt-5">
+                                <p className="text-sm text-zinc-500">Conversation Started</p>
+                                <p className="text-white">
+                                    {formatTimestamp(detail.startedAt)}
+                                </p>
+                            </div>
+
+                            <div>
+                                <p className="text-sm text-zinc-500">Last Message</p>
+                                <p className="text-white">
+                                    {formatTimestamp(detail.lastUpdated)}
                                 </p>
                             </div>
 
