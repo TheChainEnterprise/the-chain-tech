@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { MessageCircle, X, Send } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import BookingModal from "./BookingModal"; // Import the native popup modal
 
 type ChatMessage = {
     role: "user" | "assistant";
@@ -10,20 +11,13 @@ type ChatMessage = {
 };
 
 export default function ChatWidget() {
-
     const [open, setOpen] = useState(false);
-
-    useEffect(() => {
-        const openWidget = () => setOpen(true);
-        window.addEventListener("open-val-chat", openWidget);
-        return () => {
-            window.removeEventListener("open-val-chat", openWidget);
-        };
-    }, []);
-
     const [input, setInput] = useState("");
     const [loading, setLoading] = useState(false);
     const [sessionId, setSessionId] = useState("");
+
+    // Modal state for native website popup
+    const [bookingData, setBookingData] = useState<{ tenantId: string; sessionId: string } | null>(null);
 
     const DEFAULT_MESSAGES: ChatMessage[] = [
         {
@@ -36,32 +30,23 @@ export default function ChatWidget() {
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({
-            behavior: "smooth",
-        });
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages, loading]);
 
     useEffect(() => {
         let id = localStorage.getItem("thechain-session");
-
         if (!id) {
             id = "visitor-" + Math.random().toString(36).substring(2, 14);
             localStorage.setItem("thechain-session", id);
         }
-
         setSessionId(id);
 
         const savedMessages = localStorage.getItem("thechain-chat");
         if (savedMessages) {
-            try {
-                setMessages(JSON.parse(savedMessages));
-            } catch {
-                localStorage.removeItem("thechain-chat");
-            }
+            try { setMessages(JSON.parse(savedMessages)); } catch { localStorage.removeItem("thechain-chat"); }
         }
 
-        const savedOpen = localStorage.getItem("thechain-chat-open");
-        if (savedOpen === "true") {
+        if (localStorage.getItem("thechain-chat-open") === "true") {
             setOpen(true);
         }
     }, []);
@@ -86,33 +71,11 @@ export default function ChatWidget() {
         setOpen(true);
     }
 
-    // Helper function to open the booking modal as a popup window
-    function openBookingPopup(tenantId: string, sId: string) {
-        const width = 450;
-        const height = 600;
-        const left = (window.innerWidth - width) / 2;
-        const top = (window.innerHeight - height) / 2;
-        
-        window.open(
-            `https://ainegotiator-8rik.onrender.com/book/${tenantId}/${sId}`,
-            'BookingWindow',
-            `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`
-        );
-    }
-
     async function sendMessage() {
         if (!input.trim() || loading) return;
 
         const userMessage = input.trim();
-
-        setMessages((prev) => [
-            ...prev,
-            {
-                role: "user",
-                text: userMessage,
-            },
-        ]);
-
+        setMessages((prev) => [...prev, { role: "user", text: userMessage }]);
         setInput("");
         setLoading(true);
 
@@ -121,9 +84,7 @@ export default function ChatWidget() {
 
             const res = await fetch("/api/chat", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     sessionId,
                     message: userMessage,
@@ -134,7 +95,7 @@ export default function ChatWidget() {
             const data = await res.json();
             let rawResponse = data.response || data.error || "Sorry, I couldn't generate a response.";
 
-            // Intercept modal tag, strip it from chat bubble, and trigger popup window automatically
+            // Intercept modal tag and trigger the native website popup instead of window.open or links
             const modalMatch = rawResponse.match(/\[\[OPEN_BOOKING_MODAL:(.*?):(.*?)\]\]/);
             if (modalMatch) {
                 const tenantId = modalMatch[1];
@@ -142,29 +103,16 @@ export default function ChatWidget() {
 
                 rawResponse = rawResponse.replace(/\[\[OPEN_BOOKING_MODAL:.*?\]\]/g, "").trim();
                 if (!rawResponse) {
-                    rawResponse = "Perfect! Please select your appointment slot in the window.";
+                    rawResponse = "Perfect! Please choose your slot from the popup window.";
                 }
 
-                // Automatically launch the popup window
-                openBookingPopup(tenantId, sId);
+                // Open native modal right on the page
+                setBookingData({ tenantId, sessionId: sId });
             }
 
-            setMessages((prev) => [
-                ...prev,
-                {
-                    role: "assistant",
-                    text: rawResponse,
-                },
-            ]);
-
+            setMessages((prev) => [...prev, { role: "assistant", text: rawResponse }]);
         } catch {
-            setMessages((prev) => [
-                ...prev,
-                {
-                    role: "assistant",
-                    text: "Sorry, something went wrong.",
-                },
-            ]);
+            setMessages((prev) => [...prev, { role: "assistant", text: "Sorry, something went wrong." }]);
         }
 
         setLoading(false);
@@ -176,8 +124,6 @@ export default function ChatWidget() {
                 whileHover={{ scale: 1.08 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setOpen(!open)}
-                aria-label={open ? "Close Val AI chat" : "Open Val AI chat"}
-                title={open ? "Close Val AI chat" : "Open Val AI chat"}
                 className="fixed bottom-8 right-8 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-cyan-400 text-black shadow-[0_0_40px_rgba(34,211,238,.45)]"
             >
                 {open ? <X size={28} /> : <MessageCircle size={28} />}
@@ -222,25 +168,12 @@ export default function ChatWidget() {
                             {loading && (
                                 <div className="max-w-fit rounded-2xl bg-cyan-400 px-5 py-4">
                                     <div className="flex items-center gap-2">
-                                        <motion.span
-                                            className="h-2 w-2 rounded-full bg-black"
-                                            animate={{ opacity: [0.2, 1, 0.2] }}
-                                            transition={{ repeat: Infinity, duration: 1, delay: 0 }}
-                                        />
-                                        <motion.span
-                                            className="h-2 w-2 rounded-full bg-black"
-                                            animate={{ opacity: [0.2, 1, 0.2] }}
-                                            transition={{ repeat: Infinity, duration: 1, delay: 0.2 }}
-                                        />
-                                        <motion.span
-                                            className="h-2 w-2 rounded-full bg-black"
-                                            animate={{ opacity: [0.2, 1, 0.2] }}
-                                            transition={{ repeat: Infinity, duration: 1, delay: 0.4 }}
-                                        />
+                                        <span className="h-2 w-2 rounded-full bg-black animate-pulse" />
+                                        <span className="h-2 w-2 rounded-full bg-black animate-pulse delay-150" />
+                                        <span className="h-2 w-2 rounded-full bg-black animate-pulse delay-300" />
                                     </div>
                                 </div>
                             )}
-
                             <div ref={messagesEndRef} />
                         </div>
 
@@ -249,20 +182,13 @@ export default function ChatWidget() {
                                 <input
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
-                                    onKeyDown={(e) => {
-                                        if (e.key === "Enter") {
-                                            sendMessage();
-                                        }
-                                    }}
+                                    onKeyDown={(e) => { if (e.key === "Enter") sendMessage(); }}
                                     placeholder="Ask Val anything..."
                                     className="flex-1 rounded-xl border border-cyan-400/20 bg-[#05070A] px-4 py-3 text-white outline-none focus:border-cyan-400"
                                 />
-
                                 <button
                                     onClick={sendMessage}
                                     disabled={loading}
-                                    aria-label="Send message"
-                                    title="Send message"
                                     className="rounded-xl bg-cyan-400 p-3 text-black transition hover:bg-cyan-300 disabled:opacity-50"
                                 >
                                     <Send size={18} />
@@ -272,6 +198,18 @@ export default function ChatWidget() {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* Native In-Page Popup Modal */}
+            {bookingData && (
+                <BookingModal 
+                    tenantId={bookingData.tenantId}
+                    sessionId={bookingData.sessionId}
+                    onClose={() => setBookingData(null)}
+                    onSuccess={() => {
+                        setMessages(prev => [...prev, { role: "assistant", text: "✅ Your appointment is confirmed! We look forward to seeing you." }]);
+                    }}
+                />
+            )}
         </>
     );
 }
