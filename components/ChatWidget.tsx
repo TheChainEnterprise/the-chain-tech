@@ -14,139 +14,93 @@ export default function ChatWidget() {
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
-
         const openWidget = () => setOpen(true);
-
         window.addEventListener("open-val-chat", openWidget);
-
         return () => {
             window.removeEventListener("open-val-chat", openWidget);
         };
-
     }, []);
 
     const [input, setInput] = useState("");
     const [loading, setLoading] = useState(false);
     const [sessionId, setSessionId] = useState("");
 
-const DEFAULT_MESSAGES: ChatMessage[] = [
-    {
-        role: "assistant",
-        text:
-            "Hello! 👋\n\nI'm Val.\n\nHow can I help you today?",
-    },
-];
+    const DEFAULT_MESSAGES: ChatMessage[] = [
+        {
+            role: "assistant",
+            text: "Hello! 👋\n\nI'm Val.\n\nHow can I help you today?",
+        },
+    ];
 
-const [messages, setMessages] =
-    useState<ChatMessage[]>(DEFAULT_MESSAGES);
+    const [messages, setMessages] = useState<ChatMessage[]>(DEFAULT_MESSAGES);
+    const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-const messagesEndRef = useRef<HTMLDivElement | null>(null);
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({
+            behavior: "smooth",
+        });
+    }, [messages, loading]);
 
-useEffect(() => {
+    useEffect(() => {
+        let id = localStorage.getItem("thechain-session");
 
-    messagesEndRef.current?.scrollIntoView({
-        behavior: "smooth",
-    });
-
-}, [messages, loading]);
-
-useEffect(() => {
-
-    let id = localStorage.getItem("thechain-session");
-
-    if (!id) {
-
-        id =
-            "visitor-" +
-            Math.random().toString(36).substring(2, 14);
-
-        localStorage.setItem("thechain-session", id);
-
-    }
-
-    setSessionId(id);
-
-    const savedMessages =
-        localStorage.getItem("thechain-chat");
-
-    if (savedMessages) {
-
-        try {
-
-            setMessages(
-                JSON.parse(savedMessages)
-            );
-
-        } catch {
-
-            localStorage.removeItem(
-                "thechain-chat"
-            );
-
+        if (!id) {
+            id = "visitor-" + Math.random().toString(36).substring(2, 14);
+            localStorage.setItem("thechain-session", id);
         }
 
-    }
+        setSessionId(id);
 
-    const savedOpen =
-        localStorage.getItem(
-            "thechain-chat-open"
-        );
+        const savedMessages = localStorage.getItem("thechain-chat");
+        if (savedMessages) {
+            try {
+                setMessages(JSON.parse(savedMessages));
+            } catch {
+                localStorage.removeItem("thechain-chat");
+            }
+        }
 
-    if (savedOpen === "true") {
+        const savedOpen = localStorage.getItem("thechain-chat-open");
+        if (savedOpen === "true") {
+            setOpen(true);
+        }
+    }, []);
 
+    useEffect(() => {
+        localStorage.setItem("thechain-chat", JSON.stringify(messages));
+    }, [messages]);
+
+    useEffect(() => {
+        localStorage.setItem("thechain-chat-open", String(open));
+    }, [open]);
+
+    function startNewChat() {
+        const id = "visitor-" + Math.random().toString(36).substring(2, 14);
+        localStorage.removeItem("thechain-chat");
+        localStorage.removeItem("thechain-chat-open");
+        localStorage.setItem("thechain-session", id);
+        setSessionId(id);
+        setMessages(DEFAULT_MESSAGES);
+        setInput("");
+        setLoading(false);
         setOpen(true);
-
     }
 
-}, []);
-
-useEffect(() => {
-
-    localStorage.setItem(
-        "thechain-chat",
-        JSON.stringify(messages)
-    );
-
-}, [messages]);
-
-useEffect(() => {
-
-    localStorage.setItem(
-        "thechain-chat-open",
-        String(open)
-    );
-
-}, [open]);
-
-function startNewChat() {
-
-    const id =
-        "visitor-" +
-        Math.random().toString(36).substring(2, 14);
-
-    localStorage.removeItem("thechain-chat");
-
-    localStorage.removeItem("thechain-chat-open");
-
-    localStorage.setItem(
-        "thechain-session",
-        id
-    );
-
-    setSessionId(id);
-
-    setMessages(DEFAULT_MESSAGES);
-
-    setInput("");
-
-    setLoading(false);
-
-    setOpen(true);
-
-}
+    // Helper function to open the booking modal as a popup window
+    function openBookingPopup(tenantId: string, sId: string) {
+        const width = 450;
+        const height = 600;
+        const left = (window.innerWidth - width) / 2;
+        const top = (window.innerHeight - height) / 2;
+        
+        window.open(
+            `https://ainegotiator-8rik.onrender.com/book/${tenantId}/${sId}`,
+            'BookingWindow',
+            `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`
+        );
+    }
 
     async function sendMessage() {
-
         if (!input.trim() || loading) return;
 
         const userMessage = input.trim();
@@ -163,7 +117,6 @@ function startNewChat() {
         setLoading(true);
 
         try {
-
             await new Promise((resolve) => setTimeout(resolve, 1000));
 
             const res = await fetch("/api/chat", {
@@ -179,20 +132,32 @@ function startNewChat() {
             });
 
             const data = await res.json();
+            let rawResponse = data.response || data.error || "Sorry, I couldn't generate a response.";
+
+            // Intercept modal tag, strip it from chat bubble, and trigger popup window automatically
+            const modalMatch = rawResponse.match(/\[\[OPEN_BOOKING_MODAL:(.*?):(.*?)\]\]/);
+            if (modalMatch) {
+                const tenantId = modalMatch[1];
+                const sId = modalMatch[2];
+
+                rawResponse = rawResponse.replace(/\[\[OPEN_BOOKING_MODAL:.*?\]\]/g, "").trim();
+                if (!rawResponse) {
+                    rawResponse = "Perfect! Please select your appointment slot in the window.";
+                }
+
+                // Automatically launch the popup window
+                openBookingPopup(tenantId, sId);
+            }
 
             setMessages((prev) => [
                 ...prev,
                 {
                     role: "assistant",
-                    text:
-                        data.response ||
-                        data.error ||
-                        "Sorry, I couldn't generate a response.",
+                    text: rawResponse,
                 },
             ]);
 
         } catch {
-
             setMessages((prev) => [
                 ...prev,
                 {
@@ -200,11 +165,9 @@ function startNewChat() {
                     text: "Sorry, something went wrong.",
                 },
             ]);
-
         }
 
         setLoading(false);
-
     }
 
     return (
@@ -229,32 +192,21 @@ function startNewChat() {
                         transition={{ duration: 0.2 }}
                         className="fixed bottom-28 right-8 z-50 flex h-[500px] w-[360px] flex-col overflow-hidden rounded-3xl border border-cyan-400/20 bg-[#0B1118] shadow-[0_0_60px_rgba(34,211,238,.15)]"
                     >
-<div className="flex items-start justify-between border-b border-cyan-400/10 p-5">
+                        <div className="flex items-start justify-between border-b border-cyan-400/10 p-5">
+                            <div>
+                                <h2 className="text-2xl font-bold text-white">Val</h2>
+                                <p className="mt-1 text-sm text-cyan-300">AI Receptionist</p>
+                            </div>
+                            <button
+                                onClick={startNewChat}
+                                className="rounded-lg border border-cyan-400/20 px-3 py-2 text-xs text-cyan-300 transition hover:bg-cyan-400/10"
+                            >
+                                New Chat
+                            </button>
+                        </div>
 
-    <div>
-
-        <h2 className="text-2xl font-bold text-white">
-            Val
-        </h2>
-
-        <p className="mt-1 text-sm text-cyan-300">
-            AI Receptionist
-        </p>
-
-    </div>
-
-    <button
-        onClick={startNewChat}
-        className="rounded-lg border border-cyan-400/20 px-3 py-2 text-xs text-cyan-300 transition hover:bg-cyan-400/10"
-    >
-        New Chat
-    </button>
-
-</div>
                         <div className="flex-1 space-y-4 overflow-y-auto p-5">
-
                             {messages.map((message, index) => (
-
                                 <div
                                     key={index}
                                     className={
@@ -265,59 +217,35 @@ function startNewChat() {
                                 >
                                     {message.text}
                                 </div>
-
                             ))}
 
                             {loading && (
-
                                 <div className="max-w-fit rounded-2xl bg-cyan-400 px-5 py-4">
-
                                     <div className="flex items-center gap-2">
-
                                         <motion.span
                                             className="h-2 w-2 rounded-full bg-black"
                                             animate={{ opacity: [0.2, 1, 0.2] }}
-                                            transition={{
-                                                repeat: Infinity,
-                                                duration: 1,
-                                                delay: 0,
-                                            }}
+                                            transition={{ repeat: Infinity, duration: 1, delay: 0 }}
                                         />
-
                                         <motion.span
                                             className="h-2 w-2 rounded-full bg-black"
                                             animate={{ opacity: [0.2, 1, 0.2] }}
-                                            transition={{
-                                                repeat: Infinity,
-                                                duration: 1,
-                                                delay: 0.2,
-                                            }}
+                                            transition={{ repeat: Infinity, duration: 1, delay: 0.2 }}
                                         />
-
                                         <motion.span
                                             className="h-2 w-2 rounded-full bg-black"
                                             animate={{ opacity: [0.2, 1, 0.2] }}
-                                            transition={{
-                                                repeat: Infinity,
-                                                duration: 1,
-                                                delay: 0.4,
-                                            }}
+                                            transition={{ repeat: Infinity, duration: 1, delay: 0.4 }}
                                         />
-
                                     </div>
-
                                 </div>
-
                             )}
 
                             <div ref={messagesEndRef} />
-
                         </div>
 
                         <div className="border-t border-cyan-400/10 p-5">
-
                             <div className="flex gap-3">
-
                                 <input
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
@@ -339,15 +267,11 @@ function startNewChat() {
                                 >
                                     <Send size={18} />
                                 </button>
-
                             </div>
-
                         </div>
-
                     </motion.div>
                 )}
             </AnimatePresence>
         </>
     );
-
 }
