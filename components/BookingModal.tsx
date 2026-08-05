@@ -146,7 +146,7 @@ export default function BookingModal({ tenantId, sessionId, onClose, onSuccess }
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
-            <div className="relative w-full max-w-lg rounded-3xl border border-cyan-400/30 bg-[#0B1118] p-6 text-white shadow-[0_0_60px_rgba(34,211,238,0.25)]">
+<div className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-3xl border border-cyan-400/30 bg-[#0B1118] p-6 text-white shadow-[0_0_60px_rgba(34,211,238,0.25)]">
                 <button
                     onClick={onClose}
                     className="absolute top-4 right-4 rounded-lg p-2 text-zinc-400 hover:bg-white/10 hover:text-white"
@@ -241,7 +241,7 @@ export default function BookingModal({ tenantId, sessionId, onClose, onSuccess }
                                 <Clock size={14} /> Available Times
                             </label>
 
-                            <div className="min-h-[140px] max-h-[200px] overflow-y-auto rounded-xl border border-cyan-400/20 bg-[#05070A] p-3">
+                            <div className="min-h-[120px] max-h-[150px] overflow-y-auto rounded-xl border border-cyan-400/20 bg-[#05070A] p-3">
                                 {!selectedDate ? (
                                     <div className="flex h-full items-center justify-center py-8 text-xs text-zinc-500">
                                         Please select a date above first.
