@@ -25,8 +25,8 @@ export default function CRMPage() {
       const data = await response.json();
 
       // Robust mapping: handle potentially malformed data
-      const mapped: Lead[] = data.map((lead: any) => ({
-        id: lead.id || Date.now(),
+const mapped: Lead[] = data.map((lead: any) => ({
+        id: lead.id,
         name: lead.name || lead.fullName || "Unknown",
         company: lead.company || "",
         email: lead.email || "",
