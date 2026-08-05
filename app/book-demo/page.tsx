@@ -102,18 +102,17 @@ export default function BookDemoPage() {
 
           <div className="mx-auto grid max-w-6xl gap-8 px-8 md:grid-cols-2">
 
-            <Card
-              icon={<Phone size={34} />}
-              title="Live AI Calls"
-              text="Experience natural phone conversations handled entirely by Val."
-            />
+<Card
+  icon={<Phone size={34} />}
+  title="Live Website Chat"
+  text="See Val greet visitors, answer questions and qualify leads in real time."
+/>
 
-            <Card
-              icon={<BrainCircuit size={34} />}
-              title="Negotiation Engine"
-              text="Watch Val negotiate pricing and qualify customers automatically."
-            />
-
+<Card
+  icon={<BrainCircuit size={34} />}
+  title="Automatic Lead Capture"
+  text="Watch Val collect names, contact details and service interest without a form."
+/>
             <Card
               icon={<Bot size={34} />}
               title="Business Knowledge"

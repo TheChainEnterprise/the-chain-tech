@@ -15,7 +15,7 @@ const roadmap = [
     icon: CheckCircle2,
     title: "Val",
     status: "AVAILABLE NOW",
-    text: "AI Negotiating Receptionist capable of answering calls, qualifying leads, negotiating with customers and booking appointments 24/7.",
+    text: "AI Negotiating Receptionist that chats with website visitors, qualifies leads, negotiates with customers and books appointments 24/7.",
   },
   {
     icon: BrainCircuit,

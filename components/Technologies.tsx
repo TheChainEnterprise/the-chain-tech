@@ -13,7 +13,7 @@ const technologies = [
     title: "Val",
     icon: Bot,
     description:
-      "An AI Negotiating Receptionist capable of answering calls, qualifying leads, negotiating with customers, booking appointments and becoming the intelligent front desk for any business.",
+      "An AI Negotiating Receptionist that chats with website visitors, qualifies leads, negotiates with customers, books appointments and becomes the intelligent front desk for any business.",
   },
   {
     title: "Negotiation Engine",

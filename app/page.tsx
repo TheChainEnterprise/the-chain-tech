@@ -48,10 +48,10 @@ const softwareSchema = {
   },
   description:
     "Val is an AI Negotiating Receptionist that answers customers, qualifies leads, negotiates, books appointments, and helps businesses operate 24/7.",
-  offers: {
+offers: {
     "@type": "Offer",
-    price: "50",
-    priceCurrency: "EUR",
+    price: "500",
+    priceCurrency: "USD",
   },
 };
 

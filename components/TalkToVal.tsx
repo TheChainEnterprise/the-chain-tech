@@ -58,16 +58,16 @@ export default function TalkToVal() {
           Talk To Val
         </motion.h2>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 0.15 }}
-          viewport={{ once: true }}
-          className="mx-auto mt-6 max-w-4xl text-center text-2xl leading-10 text-zinc-400"
-        >
-          Experience how conversations with an AI receptionist feel.
-          Soon, this section will become a fully interactive live demo.
-        </motion.p>
+<motion.p
+  initial={{ opacity: 0 }}
+  whileInView={{ opacity: 1 }}
+  transition={{ delay: 0.15 }}
+  viewport={{ once: true }}
+  className="mx-auto mt-6 max-w-4xl text-center text-2xl leading-10 text-zinc-400"
+>
+  This is a real conversation Val can have. Click below and try
+  it yourself, live, right now.
+</motion.p>
 
         <div className="mt-20 space-y-8">
           {messages.map((message, index) => (

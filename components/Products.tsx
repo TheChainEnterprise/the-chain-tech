@@ -14,7 +14,7 @@ const products = [
     name: "Val",
     badge: "AVAILABLE NOW",
     description:
-      "An AI Negotiating Receptionist capable of answering calls, qualifying leads, negotiating with customers, booking appointments and operating as a 24/7 intelligent front desk.",
+      "An AI Negotiating Receptionist that chats with your website visitors, qualifies leads, negotiates with customers, books appointments and operates as a 24/7 intelligent front desk.",
   },
   {
     icon: PhoneCall,
@@ -26,16 +26,16 @@ const products = [
   {
     icon: CalendarDays,
     name: "Automation Hub",
-    badge: "COMING SOON",
+    badge: "AVAILABLE NOW",
     description:
-      "Connect calendars, CRMs, WhatsApp, email, phone systems and internal software into one autonomous workflow.",
+      "Val already connects your calendar, WhatsApp, email and CRM into one workflow — every conversation, booking and lead flows automatically into your dashboard.",
   },
   {
     icon: BrainCircuit,
     name: "Business Brain",
-    badge: "IN DEVELOPMENT",
+    badge: "AVAILABLE NOW",
     description:
-      "Persistent company memory that learns your business, customers, pricing, services and negotiation strategies over time.",
+      "Val learns your business, services, pricing and FAQs, and uses that knowledge in every customer conversation — continuously refined as your business grows.",
   },
 ];
 
