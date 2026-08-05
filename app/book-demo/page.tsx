@@ -87,11 +87,9 @@ export default function BookDemoPage() {
               Book A Demo
             </h1>
 
-            <p className="mx-auto mt-8 max-w-3xl text-2xl leading-10 text-zinc-400">
-              Discover how Val can answer calls, negotiate with customers,
-              qualify leads and automate your business.
-            </p>
-
+<p className="mx-auto mt-8 max-w-3xl text-2xl leading-10 text-zinc-400">
+  Discover how Val chats with your visitors, negotiates within your rules, qualifies leads and automates your business.
+</p>
           </div>
 
         </section>
