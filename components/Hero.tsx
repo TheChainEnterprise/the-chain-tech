@@ -43,7 +43,7 @@ export default function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15 }}
-        className="relative z-10 text-center text-7xl font-black tracking-tight"
+        className="relative z-10 text-center text-5xl font-black tracking-tight sm:text-6xl md:text-7xl"
       >
         THE CHAIN
       </motion.h1>

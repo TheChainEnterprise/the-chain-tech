@@ -62,7 +62,7 @@ export default function Technologies() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center text-6xl font-black"
+          className="text-center text-4xl font-black sm:text-5xl md:text-6xl"
         >
           Technologies
         </motion.h2>
@@ -72,7 +72,7 @@ export default function Technologies() {
           whileInView={{ opacity: 1 }}
           transition={{ delay: 0.15 }}
           viewport={{ once: true }}
-          className="mx-auto mt-6 mb-24 max-w-4xl text-center text-2xl leading-10 text-zinc-400"
+          className="mx-auto mt-6 mb-24 max-w-4xl text-center text-lg leading-8 text-zinc-400 sm:text-2xl sm:leading-10"
         >
           We are building an ecosystem of autonomous AI capable of communicating,
           negotiating, executing business operations and verifying ownership
