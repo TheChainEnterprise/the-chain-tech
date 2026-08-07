@@ -5,11 +5,17 @@ import { Lead } from "@/lib/dummyData";
 type LeadRowProps = {
   lead: Lead;
   onClick: () => void;
+  selectMode?: boolean;
+  checked?: boolean;
+  onToggleCheck?: () => void;
 };
 
 export default function LeadRow({
   lead,
   onClick,
+  selectMode = false,
+  checked = false,
+  onToggleCheck,
 }: LeadRowProps) {
   const statusColors = {
     New: "bg-blue-500/20 text-blue-300",
@@ -22,9 +28,21 @@ export default function LeadRow({
 
   return (
     <tr
-      onClick={onClick}
+      onClick={() => (selectMode ? onToggleCheck?.() : onClick())}
       className="cursor-pointer border-b border-cyan-400/10 transition hover:bg-cyan-400/5"
     >
+      {selectMode && (
+        <td className="px-6 py-5">
+          <input
+            type="checkbox"
+            checked={checked}
+            onChange={() => onToggleCheck?.()}
+            onClick={(e) => e.stopPropagation()}
+            className="h-4 w-4 accent-cyan-400"
+          />
+        </td>
+      )}
+
       <td className="px-6 py-5 font-semibold text-white">
         {lead.name}
       </td>

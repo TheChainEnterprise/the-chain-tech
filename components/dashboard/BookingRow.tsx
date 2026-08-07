@@ -5,11 +5,17 @@ import { Booking } from "@/lib/bookings";
 type Props = {
   booking: Booking;
   onClick: () => void;
+  selectMode?: boolean;
+  checked?: boolean;
+  onToggleCheck?: () => void;
 };
 
 export default function BookingRow({
   booking,
   onClick,
+  selectMode = false,
+  checked = false,
+  onToggleCheck,
 }: Props) {
   function statusColor() {
     switch (booking.status) {
@@ -32,9 +38,21 @@ export default function BookingRow({
 
   return (
     <tr
-      onClick={onClick}
+      onClick={() => (selectMode ? onToggleCheck?.() : onClick())}
       className="cursor-pointer border-b border-cyan-400/5 transition hover:bg-cyan-400/5"
     >
+      {selectMode && (
+        <td className="px-6 py-5">
+          <input
+            type="checkbox"
+            checked={checked}
+            onChange={() => onToggleCheck?.()}
+            onClick={(e) => e.stopPropagation()}
+            className="h-4 w-4 accent-cyan-400"
+          />
+        </td>
+      )}
+
       <td className="px-6 py-5 font-medium text-white">
         {booking.customer}
       </td>

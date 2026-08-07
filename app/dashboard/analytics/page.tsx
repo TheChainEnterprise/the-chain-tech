@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 import {
   Activity,
   Bot,
   CalendarDays,
-  Euro,
+  DollarSign,
   MessageSquare,
   Server,
   ShieldCheck,
@@ -17,12 +18,52 @@ import {
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import StatCard from "@/components/dashboard/StatCard";
 import ActivityCard from "@/components/dashboard/ActivityCard";
+import BackButton from "@/components/BackButton";
+
+type Analytics = {
+  clients: number;
+  conversations: number;
+  leads: number;
+  bookings: number;
+  revenue: number;
+};
 
 export default function AnalyticsPage() {
+  const [data, setData] = useState<Analytics>({
+    clients: 0,
+    conversations: 0,
+    leads: 0,
+    bookings: 0,
+    revenue: 0,
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadAnalytics() {
+      try {
+        const res = await fetch("/api/dashboard/analytics", { cache: "no-store" });
+        if (!res.ok) throw new Error("Failed to load analytics");
+        const json = await res.json();
+        setData(json);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadAnalytics();
+    const interval = setInterval(loadAnalytics, 15000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const v = (n: number) => (loading ? "..." : String(n));
+
   return (
     <DashboardLayout>
 
       <div className="space-y-8">
+
+        <BackButton href="/dashboard" label="Back to Dashboard" />
 
         {/* Header */}
 
@@ -45,25 +86,25 @@ export default function AnalyticsPage() {
 
           <StatCard
             title="Companies"
-            value="1"
+            value={v(data.clients)}
             icon={<Users size={28} />}
           />
 
           <StatCard
             title="Conversations"
-            value="0"
+            value={v(data.conversations)}
             icon={<MessageSquare size={28} />}
           />
 
           <StatCard
             title="Leads"
-            value="0"
+            value={v(data.leads)}
             icon={<TrendingUp size={28} />}
           />
 
           <StatCard
             title="Bookings"
-            value="0"
+            value={v(data.bookings)}
             icon={<CalendarDays size={28} />}
           />
 
@@ -76,8 +117,8 @@ export default function AnalyticsPage() {
 
           <StatCard
             title="Revenue"
-            value="€0"
-            icon={<Euro size={28} />}
+            value={loading ? "..." : `$${data.revenue}`}
+            icon={<DollarSign size={28} />}
           />
 
           <StatCard
@@ -107,7 +148,13 @@ export default function AnalyticsPage() {
 
           <div className="xl:col-span-2">
 
-            <ActivityCard />
+            <ActivityCard
+              stats={{
+                activeChats: data.conversations,
+                leads: data.leads,
+                bookings: data.bookings,
+              }}
+            />
 
           </div>
 

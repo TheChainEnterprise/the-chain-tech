@@ -57,6 +57,8 @@ export default function ConversationsView({ tenantId }: { tenantId: string }) {
     const [replyText, setReplyText] = useState("");
     const [sending, setSending] = useState(false);
     const [deleting, setDeleting] = useState(false);
+    const [selectMode, setSelectMode] = useState(false);
+    const [checkedIds, setCheckedIds] = useState<Set<string>>(new Set());
 
     const loadList = useCallback(async () => {
         try {
@@ -166,6 +168,42 @@ export default function ConversationsView({ tenantId }: { tenantId: string }) {
         }
     }
 
+    async function bulkDeleteConversations() {
+        if (checkedIds.size === 0) return;
+        if (!confirm(`Delete ${checkedIds.size} conversation(s) permanently? This cannot be undone.`)) return;
+
+        setDeleting(true);
+        try {
+            const res = await fetch(`${API}/api/admin/conversations/bulk-delete`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "x-tenant-id": tenantId },
+                body: JSON.stringify({ sessionIds: Array.from(checkedIds) }),
+            });
+            if (res.ok) {
+                if (selectedId && checkedIds.has(selectedId)) {
+                    setSelectedId(null);
+                    setDetail(null);
+                }
+                setCheckedIds(new Set());
+                setSelectMode(false);
+                await loadList();
+            }
+        } catch (err) {
+            console.error("Error bulk deleting conversations:", err);
+        } finally {
+            setDeleting(false);
+        }
+    }
+
+    function toggleChecked(sessionId: string) {
+        setCheckedIds((prev) => {
+            const next = new Set(prev);
+            if (next.has(sessionId)) next.delete(sessionId);
+            else next.add(sessionId);
+            return next;
+        });
+    }
+
     const selectedListItem = list.find((c) => c.sessionId === selectedId);
     const isPaused = detail?.status === "Manual Override";
 
@@ -226,15 +264,53 @@ export default function ConversationsView({ tenantId }: { tenantId: string }) {
                 {/* Conversation List */}
                 <div className="col-span-3 rounded-3xl border border-cyan-400/10 bg-[#0B1118]">
                     <div className="border-b border-cyan-400/10 p-6 space-y-3">
-                        <input
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            placeholder="Search name, phone, message..."
-                            className="w-full rounded-xl bg-[#05070A] px-4 py-3 text-sm text-white outline-none"
-                        />
-                        <p className="text-sm text-zinc-500">
-                            {filteredList.length} conversation{filteredList.length === 1 ? "" : "s"}
-                        </p>
+                        <div className="flex items-center justify-between">
+                            <input
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                placeholder="Search name, phone, message..."
+                                className="w-full rounded-xl bg-[#05070A] px-4 py-3 text-sm text-white outline-none"
+                            />
+                            <button
+                                onClick={() => {
+                                    setSelectMode((v) => !v);
+                                    setCheckedIds(new Set());
+                                }}
+                                className="ml-3 shrink-0 rounded-xl border border-cyan-400/20 px-4 py-3 text-xs font-semibold text-zinc-300 transition hover:border-cyan-400 hover:text-cyan-300"
+                            >
+                                {selectMode ? "Cancel" : "Select"}
+                            </button>
+                        </div>
+
+                        {selectMode ? (
+                            <div className="flex items-center justify-between">
+                                <button
+                                    onClick={() =>
+                                        setCheckedIds(
+                                            checkedIds.size === filteredList.length
+                                                ? new Set()
+                                                : new Set(filteredList.map((c) => c.sessionId))
+                                        )
+                                    }
+                                    className="text-xs font-semibold text-cyan-300 hover:underline"
+                                >
+                                    {checkedIds.size === filteredList.length && filteredList.length > 0
+                                        ? "Deselect all"
+                                        : "Select all"}
+                                </button>
+                                <button
+                                    onClick={bulkDeleteConversations}
+                                    disabled={checkedIds.size === 0 || deleting}
+                                    className="rounded-lg bg-red-500/10 px-3 py-2 text-xs font-bold text-red-400 transition hover:bg-red-500/20 disabled:opacity-40"
+                                >
+                                    Delete {checkedIds.size > 0 ? `(${checkedIds.size})` : ""}
+                                </button>
+                            </div>
+                        ) : (
+                            <p className="text-sm text-zinc-500">
+                                {filteredList.length} conversation{filteredList.length === 1 ? "" : "s"}
+                            </p>
+                        )}
                     </div>
 
                     <div className="space-y-2 p-3">
@@ -247,14 +323,24 @@ export default function ConversationsView({ tenantId }: { tenantId: string }) {
                         {filteredList.map((c) => (
                             <div
                                 key={c.sessionId}
-                                className={`group relative rounded-2xl transition ${
+                                className={`group relative flex items-center rounded-2xl transition ${
                                     selectedId === c.sessionId
                                         ? "bg-cyan-400/20"
                                         : "hover:bg-cyan-400/10"
                                 }`}
                             >
+                                {selectMode && (
+                                    <input
+                                        type="checkbox"
+                                        checked={checkedIds.has(c.sessionId)}
+                                        onChange={() => toggleChecked(c.sessionId)}
+                                        className="ml-4 h-4 w-4 shrink-0 accent-cyan-400"
+                                    />
+                                )}
                                 <button
-                                    onClick={() => setSelectedId(c.sessionId)}
+                                    onClick={() =>
+                                        selectMode ? toggleChecked(c.sessionId) : setSelectedId(c.sessionId)
+                                    }
                                     className="w-full p-4 text-left"
                                 >
                                     <h3 className="pr-8 font-semibold text-white">

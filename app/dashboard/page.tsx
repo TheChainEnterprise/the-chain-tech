@@ -12,6 +12,7 @@ import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import StatCard from "@/components/dashboard/StatCard";
 import ActivityCard from "@/components/dashboard/ActivityCard";
 import QuickAction from "@/components/dashboard/QuickAction";
+import BackButton from "@/components/BackButton";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 const TENANT_ID = "the_chain_technologies";
@@ -57,6 +58,8 @@ export default function DashboardPage() {
   return (
     <DashboardLayout>
       <div className="space-y-8">
+        <BackButton href="/" label="Back to Website" />
+
         {/* Stats */}
         <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           <StatCard
@@ -87,7 +90,7 @@ export default function DashboardPage() {
         {/* Main Content */}
         <section className="grid gap-8 xl:grid-cols-3">
           <div className="xl:col-span-2">
-            <ActivityCard />
+            <ActivityCard stats={stats} />
           </div>
 
           <div className="space-y-6">
