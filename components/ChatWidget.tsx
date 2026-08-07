@@ -124,9 +124,9 @@ export default function ChatWidget() {
                 whileHover={{ scale: 1.08 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setOpen(!open)}
-                className="fixed bottom-8 right-8 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-cyan-400 text-black shadow-[0_0_40px_rgba(34,211,238,.45)]"
+                className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-cyan-400 text-black shadow-[0_0_40px_rgba(34,211,238,.45)] sm:bottom-8 sm:right-8 sm:h-16 sm:w-16"
             >
-                {open ? <X size={28} /> : <MessageCircle size={28} />}
+                {open ? <X size={26} /> : <MessageCircle size={26} />}
             </motion.button>
 
             <AnimatePresence>
@@ -136,7 +136,7 @@ export default function ChatWidget() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 20, scale: 0.95 }}
                         transition={{ duration: 0.2 }}
-                        className="fixed bottom-28 right-8 z-50 flex h-[500px] w-[360px] flex-col overflow-hidden rounded-3xl border border-cyan-400/20 bg-[#0B1118] shadow-[0_0_60px_rgba(34,211,238,.15)]"
+                        className="fixed bottom-24 left-4 right-4 z-50 flex h-[min(500px,calc(100vh-140px))] flex-col overflow-hidden rounded-3xl border border-cyan-400/20 bg-[#0B1118] shadow-[0_0_60px_rgba(34,211,238,.15)] sm:bottom-28 sm:left-auto sm:right-8 sm:h-[500px] sm:w-[360px]"
                     >
                         <div className="flex items-start justify-between border-b border-cyan-400/10 p-5">
                             <div>
