@@ -356,7 +356,7 @@ export default function ConversationsView({
             {/* Fixed-height workspace.
                 The panels inside this area can now correctly use
                 overflow-y-auto instead of expanding the page. */}
-            <div className="grid min-h-0 h-[calc(100vh-270px)] grid-cols-12 gap-6">
+            <div className="grid min-h-0 grid-cols-12 gap-6">
                 {/* Conversation List */}
                 <div className="col-span-3 flex min-h-0 flex-col overflow-hidden rounded-3xl border border-cyan-400/10 bg-[#0B1118]">
                     <div className="shrink-0 space-y-3 border-b border-cyan-400/10 p-6">
