@@ -27,7 +27,7 @@ export default function TermsPage() {
 
           <div className="relative z-10 mx-auto max-w-5xl px-8">
 
-            <h1 className="text-center text-7xl font-black">
+            <h1 className="text-center text-3xl font-black sm:text-6xl md:text-7xl">
               Terms of Service
             </h1>
 

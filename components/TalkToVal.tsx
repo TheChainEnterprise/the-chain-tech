@@ -53,7 +53,7 @@ export default function TalkToVal() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center text-6xl font-black"
+          className="text-center text-4xl font-black sm:text-5xl md:text-6xl"
         >
           Talk To Val
         </motion.h2>

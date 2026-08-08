@@ -30,7 +30,7 @@ export default function CTA() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-6xl font-black"
+          className="text-3xl font-black sm:text-5xl md:text-6xl"
         >
           Ready To Automate Your Business?
         </motion.h2>

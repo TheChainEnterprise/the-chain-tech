@@ -83,11 +83,11 @@ export default function BookDemoPage() {
 
           <div className="relative z-10 mx-auto max-w-5xl px-8 text-center">
 
-            <h1 className="text-7xl font-black">
+            <h1 className="text-4xl font-black sm:text-6xl md:text-7xl">
               Book A Demo
             </h1>
 
-<p className="mx-auto mt-8 max-w-3xl text-2xl leading-10 text-zinc-400">
+<p className="mx-auto mt-8 max-w-3xl text-lg leading-8 text-zinc-400 sm:text-2xl sm:leading-10">
   Discover how Val chats with your visitors, negotiates within your rules, qualifies leads and automates your business.
 </p>
           </div>
@@ -133,7 +133,7 @@ export default function BookDemoPage() {
 
           <div className="mx-auto max-w-3xl px-8">
 
-            <h2 className="text-center text-5xl font-black">
+            <h2 className="text-center text-3xl font-black sm:text-4xl md:text-5xl">
               Request Your Demo
             </h2>
 

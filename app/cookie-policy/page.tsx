@@ -27,7 +27,7 @@ export default function CookiePolicyPage() {
 
           <div className="relative z-10 mx-auto max-w-5xl px-8">
 
-            <h1 className="text-center text-7xl font-black">
+            <h1 className="text-center text-4xl font-black sm:text-6xl md:text-7xl">
               Cookie Policy
             </h1>
 

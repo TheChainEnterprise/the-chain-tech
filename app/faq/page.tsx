@@ -91,11 +91,11 @@ export default function FAQPage() {
 
           <div className="relative z-10 mx-auto max-w-5xl px-8 text-center">
 
-            <h1 className="text-7xl font-black">
+            <h1 className="text-3xl font-black sm:text-5xl md:text-7xl">
               Frequently Asked Questions
             </h1>
 
-            <p className="mx-auto mt-8 max-w-3xl text-2xl leading-10 text-zinc-400">
+            <p className="mx-auto mt-8 max-w-3xl text-lg leading-8 text-zinc-400 sm:text-2xl sm:leading-10">
               Everything you need to know about Val and The Chain Technologies.
             </p>
 

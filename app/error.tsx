@@ -48,7 +48,7 @@ export default function Error({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
-            className="relative z-10 mt-8 text-6xl font-black"
+            className="relative z-10 mt-8 text-3xl font-black sm:text-5xl md:text-6xl"
           >
             Something Went Wrong
           </motion.h1>

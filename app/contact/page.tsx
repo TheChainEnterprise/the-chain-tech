@@ -66,11 +66,11 @@ export default function ContactPage() {
 
           <div className="relative z-10 mx-auto max-w-5xl px-8 text-center">
 
-            <h1 className="text-7xl font-black">
+            <h1 className="text-4xl font-black sm:text-6xl md:text-7xl">
               Contact Us
             </h1>
 
-            <p className="mx-auto mt-8 max-w-3xl text-2xl leading-10 text-zinc-400">
+            <p className="mx-auto mt-8 max-w-3xl text-lg leading-8 text-zinc-400 sm:text-2xl sm:leading-10">
               We'd love to hear about your business and show you how Val can automate your customer communication.
             </p>
 

@@ -13,7 +13,7 @@ export default function GlobalError({
 
         <div className="max-w-xl text-center">
 
-          <h1 className="text-6xl font-black text-cyan-400">
+          <h1 className="text-3xl font-black text-cyan-400 sm:text-5xl md:text-6xl">
             Fatal Error
           </h1>
 

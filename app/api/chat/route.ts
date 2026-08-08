@@ -36,6 +36,7 @@ export async function POST(req: Request) {
         return NextResponse.json({
             success: true,
             response: data.response,
+            handledByHuman: data.handledByHuman || false,
             currentPrice: data.currentPrice,
             status: data.status,
             analysis: data.analysis,

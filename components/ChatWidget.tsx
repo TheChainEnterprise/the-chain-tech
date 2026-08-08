@@ -59,6 +59,46 @@ export default function ChatWidget() {
         localStorage.setItem("thechain-chat-open", String(open));
     }, [open]);
 
+    // ---- Poll for messages a human agent sends from the dashboard ----
+    // (e.g. after clicking "Pause Val" in the admin panel). Without this,
+    // a paused conversation's replies never reach the visitor because they
+    // never go through the normal request/response cycle above.
+    const seenFingerprints = useRef<Set<string>>(new Set());
+    useEffect(() => {
+        seenFingerprints.current = new Set(
+            messages.map((m) => `${m.role === "assistant" ? "assistant" : "user"}::${m.text}`)
+        );
+    }, [messages]);
+
+    useEffect(() => {
+        if (!sessionId) return;
+
+        const poll = async () => {
+            try {
+                const res = await fetch(
+                    `/api/chat/poll?sessionId=${encodeURIComponent(sessionId)}&after=0&tenantId=the_chain_technologies`,
+                    { cache: "no-store" }
+                );
+                if (!res.ok) return;
+                const data = await res.json();
+                if (!Array.isArray(data.messages)) return;
+
+                data.messages.forEach((m: { role: string; content: string }) => {
+                    const fp = `${m.role === "assistant" ? "assistant" : "user"}::${m.content}`;
+                    if (!seenFingerprints.current.has(fp)) {
+                        seenFingerprints.current.add(fp);
+                        setMessages((prev) => [...prev, { role: m.role as "user" | "assistant", text: m.content }]);
+                    }
+                });
+            } catch {
+                // Silent — retries on the next tick.
+            }
+        };
+
+        const interval = setInterval(poll, 4000);
+        return () => clearInterval(interval);
+    }, [sessionId]);
+
     function startNewChat() {
         const id = "visitor-" + Math.random().toString(36).substring(2, 14);
         localStorage.removeItem("thechain-chat");
@@ -93,6 +133,14 @@ export default function ChatWidget() {
             });
 
             const data = await res.json();
+
+            if (data.handledByHuman) {
+                // A human has taken this conversation over — Val stays quiet.
+                // Their reply will arrive shortly via polling.
+                setLoading(false);
+                return;
+            }
+
             let rawResponse = data.response || data.error || "Sorry, I couldn't generate a response.";
 
             // Intercept modal tag and trigger the native website popup instead of window.open or links

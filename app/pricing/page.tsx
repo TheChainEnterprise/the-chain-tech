@@ -42,7 +42,7 @@ export default function PricingPage() {
             <motion.h1
               initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-7xl font-black"
+              className="text-4xl font-black sm:text-6xl md:text-7xl"
             >
               Invest Once.
               <br />
@@ -94,9 +94,9 @@ export default function PricingPage() {
               <div>
                 <Rocket className="mb-8 text-cyan-300" size={40} />
 
-                <h2 className="text-4xl font-black">30-Day Pilot</h2>
+                <h2 className="text-2xl font-black sm:text-3xl md:text-4xl">30-Day Pilot</h2>
 
-                <div className="mt-6 text-6xl font-black text-cyan-300">$500</div>
+                <div className="mt-6 text-4xl font-black text-cyan-300 sm:text-5xl md:text-6xl">$500</div>
 
                 <p className="mt-2 font-medium text-zinc-300">
                   See Val chat with real website visitors before making a long-term decision.
@@ -129,9 +129,9 @@ export default function PricingPage() {
               <div>
                 <Bot className="mb-8 text-cyan-300" size={40} />
 
-                <h2 className="text-4xl font-black">Val AI Assistant</h2>
+                <h2 className="text-2xl font-black sm:text-3xl md:text-4xl">Val AI Assistant</h2>
 
-                <div className="mt-6 text-6xl font-black text-cyan-300">$1,000</div>
+                <div className="mt-6 text-4xl font-black text-cyan-300 sm:text-5xl md:text-6xl">$1,000</div>
 
                 <p className="mt-2 font-medium text-zinc-300">
                   Everything included. Renews at only $500/year.
@@ -171,9 +171,9 @@ export default function PricingPage() {
               <div>
                 <Globe className="mb-8 text-cyan-300" size={40} />
 
-                <h2 className="text-4xl font-black">Launch Package</h2>
+                <h2 className="text-2xl font-black sm:text-3xl md:text-4xl">Launch Package</h2>
 
-                <div className="mt-6 text-6xl font-black text-cyan-300">
+                <div className="mt-6 text-4xl font-black text-cyan-300 sm:text-5xl md:text-6xl">
                   ${bundleTotal.toLocaleString()}
                 </div>
 
@@ -283,7 +283,7 @@ export default function PricingPage() {
               If Val books just ONE extra customer per month, she often pays for herself.
             </p>
 
-            <h2 className="text-6xl font-black">
+            <h2 className="text-4xl font-black sm:text-5xl md:text-6xl">
               Hire Val.
             </h2>
 
